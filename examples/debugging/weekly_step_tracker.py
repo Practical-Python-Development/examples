@@ -8,8 +8,11 @@ class WeeklyStepTracker:
         """Initialize the tracker."""
         self.week = {}
 
-    def add_day(self, day_name: str, steps: list[int] = []) -> None:  # noqa
+    def add_day(self, day_name: str, steps: list[int] | None = None) -> None:
         """Register a day in the tracker with optional step data."""
+        if steps is None:
+            steps = []
+
         self.week[day_name] = steps
 
     def record_steps(self, day_name: str, step_count: int) -> None:
