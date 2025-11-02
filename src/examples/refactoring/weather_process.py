@@ -1,3 +1,4 @@
+"""This script is badly written on purpose to demonstrate refactoring."""
 import csv, math
 
 def f(a):
