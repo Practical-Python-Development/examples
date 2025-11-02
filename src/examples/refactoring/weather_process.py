@@ -2,8 +2,10 @@
 
 import csv
 import math
+from pathlib import Path
 
-PATH_WEATHER_DATA = "./../../../data/weather_data.csv"
+
+PATH_WEATHER_DATA = Path(__file__).parents[3] / 'data'/ 'weather_data.csv'
 TEMP_THRESHOLD_C = 25.0
 FACTOR_C_TO_F = 1.8
 OFFSET_C_TO_F = 32.0
