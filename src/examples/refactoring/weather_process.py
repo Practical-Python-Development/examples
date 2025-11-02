@@ -1,6 +1,7 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv, math
+import csv
+import math
 
 
 def f(a):
