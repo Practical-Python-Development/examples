@@ -19,10 +19,7 @@ def convert_celsius_to_fahrenheit(a):
 
 
 def sum_temperatures(a):
-    s = 0
-    for i in a:
-        s += i
-    return s
+    return sum(a)
 
 
 def read_weather_data():
