@@ -23,9 +23,8 @@ def sum_temperatures(a):
 
 
 def read_weather_data():
-    file_handle = open(PATH_WEATHER_DATA)
-    station_data = list(csv.reader(file_handle))
-    file_handle.close()
+    with open(PATH_WEATHER_DATA, newline='') as csvfile:
+        station_data = list(csv.reader(csvfile))
     station_data = station_data[1:]  # remove header
     return station_data
 
