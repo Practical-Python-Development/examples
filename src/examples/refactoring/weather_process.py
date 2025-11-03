@@ -1,6 +1,5 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv, math
 import pandas as pd
 
 PATH_WEATHER_DATA = "./../../../data/weather_data.csv"
@@ -24,13 +23,13 @@ def read_weather_data() -> pd.DataFrame:
 def calculate_horizontal_wind_speed_mean(station_data: pd.DataFrame) -> pd.Series:
     horizontal_wind_speed = (
         station_data["wind_u"] ** 2 + station_data["wind_v"] ** 2
-    )**0.5
+    ) ** 0.5
     return horizontal_wind_speed.mean()
 
 
 def main():
     station_data = read_weather_data()
-    temperatures = convert_celsius_to_fahrenheit(station_data['temp'])
+    temperatures = convert_celsius_to_fahrenheit(station_data["temp"])
     horizontal_wind_speed_mean = calculate_horizontal_wind_speed_mean(station_data)
 
     print("sum", temperatures.sum())
@@ -38,5 +37,5 @@ def main():
     print("wind", horizontal_wind_speed_mean)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
