@@ -1,6 +1,7 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
 import csv, math
+import pandas as pd
 
 PATH_WEATHER_DATA = "./../../../data/weather_data.csv"
 TEMP_THRESHOLD_C = 25
@@ -8,46 +9,33 @@ OFFSET_C_TO_K = 32
 FACTOR_C_TO_F = 1.8
 
 
-def convert_celsius_to_fahrenheit(a):
+def convert_celsius_to_fahrenheit(temperatures_c: pd.Series) -> pd.Series:
     """Convert temperatures above a threshold from Celsius to Fahrenheit."""
-    t = []
-    for i in a:
-        if float(i[1]) > TEMP_THRESHOLD_C:
-            t.append(float(i[1]) * FACTOR_C_TO_F + OFFSET_C_TO_K)
-        else:
-            t.append(float(i[1]))
-    return t
+    temperatures_c = temperatures_c.copy()
+    mask = temperatures_c < TEMP_THRESHOLD_C
+    temperatures_c[mask] = temperatures_c[mask] * FACTOR_C_TO_F + OFFSET_C_TO_K
+    return temperatures_c
 
 
-def sum_temperatures(a):
-    return sum(a)
+def read_weather_data() -> pd.DataFrame:
+    return pd.read_csv(PATH_WEATHER_DATA)
 
 
-def read_weather_data():
-    with open(PATH_WEATHER_DATA, newline='') as csvfile:
-        station_data = list(csv.reader(csvfile))
-    station_data = station_data[1:]  # remove header
-    return station_data
-
-
-def calculate_horizontal_wind_speed(station_data):
-    horizontal_wind_speed = 0
-    for i in station_data:
-        u = float(i[3])
-        v = float(i[4])
-        horizontal_wind_speed += math.sqrt(u * u + v * v)
-    return horizontal_wind_speed
+def calculate_horizontal_wind_speed_mean(station_data: pd.DataFrame) -> pd.Series:
+    horizontal_wind_speed = (
+        station_data["wind_u"] ** 2 + station_data["wind_v"] ** 2
+    )**0.5
+    return horizontal_wind_speed.mean()
 
 
 def main():
     station_data = read_weather_data()
-    temperatures = convert_celsius_to_fahrenheit(station_data)
-    total_temperatures = sum_temperatures(temperatures)
-    horizontal_wind_speed = calculate_horizontal_wind_speed(station_data)
+    temperatures = convert_celsius_to_fahrenheit(station_data['temp'])
+    horizontal_wind_speed_mean = calculate_horizontal_wind_speed_mean(station_data)
 
-    print("sum", total_temperatures)
-    print("avg", total_temperatures / (len(temperatures) if len(temperatures) else 1))
-    print("wind", horizontal_wind_speed / len(station_data))
+    print("sum", temperatures.sum())
+    print("avg", temperatures.mean())
+    print("wind", horizontal_wind_speed_mean)
 
 
 if __name__ == '__main__':
