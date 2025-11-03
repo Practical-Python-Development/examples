@@ -9,6 +9,7 @@ FACTOR_C_TO_F = 1.8
 
 
 def convert_celsius_to_fahrenheit(a):
+    """Convert temperatures above a threshold from Celsius to Fahrenheit."""
     t = []
     for i in a:
         if float(i[1]) > TEMP_THRESHOLD_C:
