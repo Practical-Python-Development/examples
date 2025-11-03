@@ -8,7 +8,7 @@ OFFSET_C_TO_K = 32
 FACTOR_C_TO_F = 1.8
 
 
-def f(a):
+def convert_celsius_to_fahrenheit(a):
     t = []
     for i in a:
         if float(i[1]) > TEMP_THRESHOLD_C:
@@ -18,27 +18,40 @@ def f(a):
     return t
 
 
-def g(a):
+def sum_temperatures(a):
     s = 0
     for i in a:
         s += i
     return s
 
 
-r = open(PATH_WEATHER_DATA)
-d = list(csv.reader(r))
-r.close()
-d = d[1:]
-x = []
-for i in d:
-    x.append([i[0], i[1], i[2], i[3], i[4]])
-y = f(x)
-z = g(y)
-print("sum", z)
-print("avg", z / (len(y) if len(y) else 1))
-ws = 0
-for i in d:
-    u = float(i[3])
-    v = float(i[4])
-    ws += math.sqrt(u * u + v * v)
-print("wind", ws / len(d))
+def read_weather_data():
+    file_handle = open(PATH_WEATHER_DATA)
+    station_data = list(csv.reader(file_handle))
+    file_handle.close()
+    station_data = station_data[1:]  # remove header
+    return station_data
+
+
+def calculate_horizontal_wind_speed(station_data):
+    horizontal_wind_speed = 0
+    for i in station_data:
+        u = float(i[3])
+        v = float(i[4])
+        horizontal_wind_speed += math.sqrt(u * u + v * v)
+    return horizontal_wind_speed
+
+
+def main():
+    station_data = read_weather_data()
+    temperatures = convert_celsius_to_fahrenheit(station_data)
+    total_temperatures = sum_temperatures(temperatures)
+    horizontal_wind_speed = calculate_horizontal_wind_speed(station_data)
+
+    print("sum", total_temperatures)
+    print("avg", total_temperatures / (len(temperatures) if len(temperatures) else 1))
+    print("wind", horizontal_wind_speed / len(station_data))
+
+
+if __name__ == '__main__':
+    main()
