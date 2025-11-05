@@ -30,10 +30,9 @@ def read_weather_data():
     return obs
 
 
-y = celcius_to_fahrenheit(read_weather_data())
-z = sum_temperatures(y)
-print("sum", z)
-print("avg", z / (len(y) if len(y) else 1))
+def compute_mean_wind_speed(obs):
+    horizontal_wind_speed = (obs["wind_u"] ** 2 + obs["wind_v"] ** 2) **0.5
+    return horizontal_wind_speed.mean()
 
 
 
