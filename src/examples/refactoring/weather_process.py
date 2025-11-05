@@ -18,8 +18,7 @@ def celsius_to_fahrenheit(temperature):
     return temps_converted
 
 
-def sum_temperatures(temps):
-    return sum(temps)
+
 
 
 def read_weather_data():
