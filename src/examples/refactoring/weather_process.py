@@ -6,8 +6,8 @@ import math
 
 
 WEATHER_DATA_PATH = "./../../../data/weather_data.csv"
-TEMP_THRESHOLD_CEL = 25
-OFFSET_C_TO_F = 32
+TEMP_THRESHOLD_CEL = 25.0
+OFFSET_C_TO_F = 32.0
 TEMP_C_TO_F = 1.8
 
 
@@ -51,7 +51,7 @@ def main():
     mean_wind_speed = compute_mean_wind_speed(records)
     print("sum", total_temp)
     print("avg", total_temp / (len(converted_temps) if len(converted_temps) else 1))
-    print("wind", mean_wind_speed / len(records))
+    print("wind", mean_wind_speed)
 
 if __name__ == "__main__":
     main()
