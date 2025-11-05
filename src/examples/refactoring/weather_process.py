@@ -46,4 +46,6 @@ def main():
     print("avg", records["temp"].mean())
     print("mean", mean_wind_speed)
 
+if __name__ == "__main__":
+    main()
 
