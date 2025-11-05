@@ -15,13 +15,10 @@ FACTOR_C_TO_F = 1.8
 
 
 def celcius_to_fahrenheit(temperature):
-    temperatures = []
-    for T in temperature:
-        if float(T[1]) > TEMP_THRESHOLD_C:
-            temperatures.append(float(T[1]) * FACTOR_C_TO_F + OFFSET_C_TO_F)
-        else:
-            t.append(float(i[1]))
-    return t
+    temps_converted = temperature.copy()
+    mask = temperature > TEMP_THRESHOLD_C
+    temps_converted[mask] = temps_converted[mask] * FACTOR_C_TO_F + OFFSET_C_TO_F
+    return temps_converted
 
 
 def sum_temperatures(temps):
