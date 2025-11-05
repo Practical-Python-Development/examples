@@ -12,21 +12,21 @@ FACTOR_C_TO_F = 1.8
 
 
 def celsius_to_fahrenheit(temperature):
+    """Converting temperature above threshold from Celsius to Fahrenheit"""
     temps_converted = temperature.copy()
     mask = temperature > TEMP_THRESHOLD_C
     temps_converted[mask] = temps_converted[mask] * FACTOR_C_TO_F + OFFSET_C_TO_F
     return temps_converted
 
 
-
-
-
 def read_weather_data():
+    """Read weather data from csv file"""
     obs = pd.read_csv(WEATHER_DATA_PATH)
     return obs
 
 
 def compute_mean_wind_speed(obs):
+    """Compute mean wind speed from obs"""
     horizontal_wind_speed = (obs["wind_u"] ** 2 + obs["wind_v"] ** 2) **0.5
     return horizontal_wind_speed.mean()
 
