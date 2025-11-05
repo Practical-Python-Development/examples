@@ -17,7 +17,13 @@ def read_observations() -> pd.DataFrame:
     return obs
 
 def convert_temperatures(temps: pd.Series) -> pd.Series:
-    """Convert temps above threshold to Fahrenheit."""
+    """Convert temps above threshold to Fahrenheit.
+
+    :param temps: Temperatures to convert.
+    :param threshold: Temperature threshold. Defaults to 25.0
+    :param factor: Temperature factor. Defaults to 1.8
+    :param offset: Temperature offset in Fahrenheit. Defaults to 32.
+    """
     temps_converted = temps.copy()
     mask = temps > TEMP_THRESHOLD_CEL
     temps_converted[mask] = temps[mask] * TEMP_C_TO_F + OFFSET_C_TO_F
