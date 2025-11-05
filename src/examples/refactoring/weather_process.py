@@ -52,8 +52,9 @@ def compute_mean_wind_speed(records):
     for record in records:
         u = float(record[3])
         v = float(record[4])
-        ws += math.sqrt(u**2 + v**2)
-    print("wind", wind_speed / len(records))
+        wind_speed += math.sqrt(u**2 + v**2)
+    return wind_speed / len(records)
+
 
 
 def main():
