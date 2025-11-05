@@ -11,11 +11,11 @@ OFFSET_C_TO_F = 32
 FACTOR_C_TO_F = 1.8
 
 
-def celcius_to_fahrenheit(a):
-    t = []
-    for i in a:
-        if float(i[1]) > TEMP_THRESHOLD_C:
-            t.append(float(i[1]) * FACTOR_C_TO_F + OFFSET_C_TO_F)
+def celcius_to_fahrenheit(temperature):
+    temperatures = []
+    for T in temperature:
+        if float(T[1]) > TEMP_THRESHOLD_C:
+            temperatures.append(float(T[1]) * FACTOR_C_TO_F + OFFSET_C_TO_F)
         else:
             t.append(float(i[1]))
     return t
