@@ -1,13 +1,21 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv, math
+import csv
+import math
+
+
+
+WEATHER_DATA_PATH = "./../../../data/weather_data.csv"
+TEMP_THRESHOLD_CEL = 25
+OFFSET_C_TO_F = 32
+TEMP_C_TO_F = 1.8
 
 
 def f(a):
     t = []
     for i in a:
-        if float(i[1]) > 25:
-            t.append(float(i[1]) * 1.8 + 32)
+        if float(i[1]) > TEMP_THRESHOLD_CEL:
+            t.append(float(i[1]) * TEMP_C_TO_F + OFFSET_C_TO_F)
         else:
             t.append(float(i[1]))
     return t
@@ -20,7 +28,7 @@ def g(a):
     return s
 
 
-r = open("./../../../data/weather_data.csv")
+r = open(WEATHER_DATA_PATH)
 d = list(csv.reader(r))
 r.close()
 d = d[1:]
