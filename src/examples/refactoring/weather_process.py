@@ -1,7 +1,5 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv
-import math
 import pandas as pd
 
 
