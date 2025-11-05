@@ -28,13 +28,16 @@ def sum_temperatures(temps):
     return sum
 
 
-r = open(WEATHER_DATA_PATH)
-station_data = list(csv.reader(r))
-r.close()
-station_data = station_data[1:]
-records = []
-for record in station_data:
-    records.append([record[0], record[1], record[2], record[3], record[4]])
+def read_weather_data():
+    r = open(WEATHER_DATA_PATH)
+    station_data = list(csv.reader(r))
+    r.close()
+    station_data = station_data[1:]
+    records = []
+    for record in station_data:
+        records.append([record[0], record[1], record[2], record[3], record[4]])
+    return records
+
 
 y = celcius_to_fahrenheit(records)
 z = sum_temperatures(y)
