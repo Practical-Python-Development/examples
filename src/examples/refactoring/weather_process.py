@@ -25,7 +25,7 @@ def read_weather_data():
     return obs
 
 
-def compute_mean_wind_speed(obs):
+def compute_mean_wind_speed(obs: pd.DataFrame) -> float:
     """Compute mean wind speed from obs"""
     horizontal_wind_speed = (obs["wind_u"] ** 2 + obs["wind_v"] ** 2) **0.5
     return horizontal_wind_speed.mean()
