@@ -56,4 +56,14 @@ def compute_mean_wind_speed(records):
     print("wind", wind_speed / len(records))
 
 
+def main():
+    records = read_weather_data()
+    converted_temperatures = celcius_to_fahrenheit(records)
+    total_temperatures = sum_temperatures(converted_temperatures)
+    mean_wind_speed = compute_mean_wind_speed(records)
+    compute_mean_wind_speed(records)
+    print("sum", total_temperatures)
+    print("avg", total_temperatures / len(converted_temperatures) if len(converted_temperatures) else 1)
+    print("mean", mean_wind_speed)
+
 
