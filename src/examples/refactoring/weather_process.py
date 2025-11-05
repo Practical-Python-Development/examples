@@ -34,15 +34,7 @@ def compute_mean_wind_speed(obs):
     horizontal_wind_speed = (obs["wind_u"] ** 2 + obs["wind_v"] ** 2) **0.5
     return horizontal_wind_speed.mean()
 
-
-
-def compute_mean_wind_speed(records):
-    wind_speed = 0
-    for record in records:
-        u = float(record[3])
-        v = float(record[4])
-        wind_speed += math.sqrt(u**2 + v**2)
-    return wind_speed / len(records)
+ 
 
 
 
