@@ -39,13 +39,21 @@ def read_weather_data():
     return records
 
 
-y = celcius_to_fahrenheit(records)
+
+y = celcius_to_fahrenheit(read_weather_data())
 z = sum_temperatures(y)
 print("sum", z)
 print("avg", z / (len(y) if len(y) else 1))
-ws = 0
-for record in station_data:
-    u = float(record[3])
-    v = float(record[4])
-    ws += math.sqrt(u * u + v * v)
-print("wind", ws / len(station_data))
+
+
+
+def compute_mean_wind_speed(records):
+    wind_speed = 0
+    for record in records:
+        u = float(record[3])
+        v = float(record[4])
+        ws += math.sqrt(u**2 + v**2)
+    print("wind", wind_speed / len(records))
+
+
+
