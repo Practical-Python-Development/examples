@@ -26,15 +26,8 @@ def sum_temperatures(temps):
 
 
 def read_weather_data():
-    r = open(WEATHER_DATA_PATH)
-    station_data = list(csv.reader(r))
-    r.close()
-    station_data = station_data[1:]
-    records = []
-    for record in station_data:
-        records.append([record[0], record[1], record[2], record[3], record[4]])
-    return records
-
+    obs = pd.read_csv(WEATHER_DATA_PATH)
+    return obs
 
 
 y = celcius_to_fahrenheit(read_weather_data())
