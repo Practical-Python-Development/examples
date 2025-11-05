@@ -22,10 +22,7 @@ def celcius_to_fahrenheit(temperature):
 
 
 def sum_temperatures(temps):
-    sum = 0
-    for t in temps:
-        sum += t
-    return sum
+    return sum(temps)
 
 
 def read_weather_data():
