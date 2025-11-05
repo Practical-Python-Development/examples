@@ -1,6 +1,9 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv, math
+import csv
+import math
+import pandas as pd
+
 
 TEMP_THRESHOLD_C = 25
 
