@@ -1,56 +1,43 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv
-import math
+from pathlib import Path
+import pandas as pd
 
 
 
-WEATHER_DATA_PATH = "./../../../data/weather_data.csv"
+WEATHER_DATA_PATH = Path(__file__).parents[3]/"data"/"weather_data.csv"
 TEMP_THRESHOLD_CEL = 25.0
 OFFSET_C_TO_F = 32.0
 TEMP_C_TO_F = 1.8
 
 
-def convert_temperatures(obs):
-    temps = []
-    for record in obs:
-        if float(record[1]) > TEMP_THRESHOLD_CEL:
-            temps.append(float(record[1]) * TEMP_C_TO_F + OFFSET_C_TO_F)
-        else:
-            temps.append(float(record[1]))
-    return temps
+def read_observations() -> pd.DataFrame:
+    """Read observations from CSV file."""
+    obs = pd.read_csv(WEATHER_DATA_PATH)
+    return obs
+
+def convert_temperatures(temps: pd.Series) -> pd.Series:
+    """Convert temps above threshold to Fahrenheit."""
+    temps_converted = temps.copy()
+    mask = temps > TEMP_THRESHOLD_CEL
+    temps_converted[mask] = temps[mask] * TEMP_C_TO_F + OFFSET_C_TO_F
+    return temps_converted
 
 
-def sum_temperatures(temps):
-    return sum(temps)
 
-def read_observations():
-    r = open(WEATHER_DATA_PATH)
-    station_data = list(csv.reader(r))
-    r.close()
-    station_data = station_data[1:]
-    return [
-        [record[0], record[1], record[2], record[3], record[4]]
-        for record in station_data
-    ]
+def compute_mean_wind_speed(obs: pd.DataFrame) -> float:
+    """Compute mean horizontal wind speed magnitude."""
+    horizontal_wind_speed = (obs["wind_u"] ** 2 + obs["wind_v"] ** 2) ** 0.5
+    return horizontal_wind_speed.mean()
 
-
-def compute_mean_wind_speed(records):
-    total_wind_speed = 0
-    for record in records:
-        u = float(record[3])
-        v = float(record[4])
-        total_wind_speed += math.sqrt(u * u + v * v)
-    return total_wind_speed / len(records)
 
 
 def main():
     records = read_observations()
-    converted_temps = convert_temperatures(records)
-    total_temp = sum_temperatures(converted_temps)
+    records["temp"] = convert_temperatures(records["temp"])
     mean_wind_speed = compute_mean_wind_speed(records)
-    print("sum", total_temp)
-    print("avg", total_temp / (len(converted_temps) if len(converted_temps) else 1))
+    print("sum", records["temp"].sum())
+    print("avg", records["temp"].mean())
     print("wind", mean_wind_speed)
 
 if __name__ == "__main__":
