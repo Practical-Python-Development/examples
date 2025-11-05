@@ -11,7 +11,7 @@ OFFSET_C_TO_F = 32
 FACTOR_C_TO_F = 1.8
 
 
-def f(a):
+def celcius_to_fahrenheit(a):
     t = []
     for i in a:
         if float(i[1]) > TEMP_THRESHOLD_C:
@@ -21,27 +21,28 @@ def f(a):
     return t
 
 
-def g(a):
-    s = 0
-    for i in a:
-        s += i
-    return s
+def sum_temperatures(temps):
+    sum = 0
+    for t in temps:
+        sum += t
+    return sum
 
 
 r = open(WEATHER_DATA_PATH)
-d = list(csv.reader(r))
+station_data = list(csv.reader(r))
 r.close()
-d = d[1:]
-x = []
-for i in d:
-    x.append([i[0], i[1], i[2], i[3], i[4]])
-y = f(x)
-z = g(y)
+station_data = station_data[1:]
+records = []
+for record in station_data:
+    records.append([record[0], record[1], record[2], record[3], record[4]])
+
+y = celcius_to_fahrenheit(records)
+z = sum_temperatures(y)
 print("sum", z)
 print("avg", z / (len(y) if len(y) else 1))
 ws = 0
-for i in d:
-    u = float(i[3])
-    v = float(i[4])
+for record in station_data:
+    u = float(record[3])
+    v = float(record[4])
     ws += math.sqrt(u * u + v * v)
-print("wind", ws / len(d))
+print("wind", ws / len(station_data))
