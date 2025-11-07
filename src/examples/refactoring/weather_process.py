@@ -3,7 +3,7 @@
 import csv, math
 import pandas as pd
 
-print("Hello WOrld")
+print("Hello World")
 
 
 def f(a):
