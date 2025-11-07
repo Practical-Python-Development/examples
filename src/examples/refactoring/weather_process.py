@@ -2,6 +2,8 @@
 
 import csv, math
 
+WEATHER_DATA_FILE = "./../../../data/weather_data.csv"
+
 
 def f(a):
     t = []
@@ -20,7 +22,7 @@ def g(a):
     return s
 
 
-r = open("./../../../data/weather_data.csv")
+r = open(WEATHER_DATA_FILE)
 d = list(csv.reader(r))
 r.close()
 d = d[1:]
