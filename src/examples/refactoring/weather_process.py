@@ -1,4 +1,4 @@
-"""This script is badly written on purpose to demonstrate refactoring."""
+"""This script is badly written on purpose to demonstrate refactoring. Refactored by Daniel Rowe."""
 
 # Imports
 import csv
