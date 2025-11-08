@@ -6,37 +6,37 @@ WEATHER_DATA_FILE = "./../../../data/weather_data.csv"
 CONVERT_TEMPERATURE_THRESHOLD = 25
 
 
-def f(a):
-    t = []
-    for i in a:
-        if float(i[1]) > 25:
-            t.append(float(i[1]) * 1.8 + 32)
+def convert_fahrenheit_to_celsius(all_stations_obs_data):
+    station_temp = []
+    for station_data in all_stations_obs_data:
+        if float(station_data[1]) > CONVERT_TEMPERATURE_THRESHOLD:
+            station_temp.append(float(station_data[1]) * 1.8 + 32)
         else:
-            t.append(float(i[1]))
-    return t
+            station_temp.append(float(station_data[1]))
+    return station_temp
 
 
-def g(a):
-    s = 0
-    for i in a:
-        s += i
-    return s
+def sum_temperature_all_stations(list_stations_temp):
+    sum_temp_value = 0
+    for temp in list_stations_temp:
+        sum_temp_value += temp
+    return sum_temp_value
 
 
-r = open(WEATHER_DATA_FILE)
-d = list(csv.reader(r))
-r.close()
-d = d[1:]
-x = []
-for i in d:
-    x.append([i[0], i[1], i[2], i[3], i[4]])
-y = f(x)
-z = g(y)
-print("sum", z)
-print("avg", z / (len(y) if len(y) else 1))
-ws = 0
-for i in d:
-    u = float(i[3])
-    v = float(i[4])
-    ws += math.sqrt(u * u + v * v)
-print("wind", ws / len(d))
+weather_data = open(WEATHER_DATA_FILE)
+list_weather_data = list(csv.reader(weather_data))
+weather_data.close()
+station_measured_data = list_weather_data[1:]
+all_stations_data = []
+for single_station in list_weather_data:
+    all_stations_data.append([single_station[0], single_station[1], single_station[2], single_station[3], single_station[4]])
+converted_temperature = convert_fahrenheit_to_celsius(all_stations_data)
+temperature_sum = sum_temperature_all_stations(converted_temperature)
+print("sum", temperature_sum)
+print("avg", temperature_sum / (len(converted_temperature) if len(converted_temperature) else 1))
+wind_speed = 0
+for station in list_weather_data:
+    u_wind = float(station[3])
+    v_wind = float(station[4])
+    wind_speed += math.sqrt(u_wind * u_wind + v_wind * v_wind)
+print("wind", wind_speed / len(list_weather_data))
