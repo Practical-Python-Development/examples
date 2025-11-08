@@ -1,20 +1,18 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv, math
+import numpy as np
+from pathlib import Path
+import pandas as pd
 
-WEATHER_DATA_FILE = "./../../../data/weather_data.csv"
+WEATHER_DATA_FILE = Path(__file__).parents[3] / "data" / "weather_data.csv"
 CONVERT_TEMPERATURE_THRESHOLD = 25
 
 
-def read_observed_data():
-    weather_data = open(WEATHER_DATA_FILE)
-    list_weather_data = list(csv.reader(weather_data))
-    weather_data.close()
-    list_weather_data = list_weather_data[1:]
-    return[
-        [single_station[0], single_station[1], single_station[2], single_station[3], single_station[4]]
-        for single_station in list_weather_data
-    ]
+def read_observed_data() -> pd.DataFrame:
+    """Read observed weather data of different stations from a .csv file."""
+    weather_data = pd.read_csv(WEATHER_DATA_FILE)
+    return weather_data
+
 
 def convert_fahrenheit_to_celsius(
     all_stations_obs_temp: pd.Series,
@@ -23,36 +21,38 @@ def convert_fahrenheit_to_celsius(
     """Convert temperature values from Fahrenheit to Celsius, in case the temperature value exceeds a conversion
     threshold.
 
-def convert_fahrenheit_to_celsius(all_stations_obs_data):
-    station_temp = []
-    for station_data in all_stations_obs_data:
-        if float(station_data[1]) > CONVERT_TEMPERATURE_THRESHOLD:
-            station_temp.append(float(station_data[1]) * 1.8 + 32)
-        else:
-            station_temp.append(float(station_data[1]))
-    return station_temp
+    :param all_stations_obs_temp: Observed weather data of different stations available in the .csv file.
+    :param conversion_threshold: Conversion threshold from Fahrenheit to Celsius. It is 25 Fahreneit per default.
+    """
+    converted_temp = all_stations_obs_temp.copy()
+    conversion_mask = all_stations_obs_temp > conversion_threshold
+    converted_temp[conversion_mask] = all_stations_obs_temp * 1.8 + 32
+
+    return converted_temp
 
 
-def sum_temperature_all_stations(observed_data_temp):
+def sum_temperature_all_stations(observed_data_temp : pd.Series) -> float:
+    """Calculates the sum of the temperature values from all stations.
+
+    :param observed_data_temp: Observed weather data of different stations.
+    """
     return sum(observed_data_temp)
 
 
-def average_wind_speed(observed_data):
-    wind_speed = 0
-    for station in observed_data:
-        u_wind = float(station[3])
-        v_wind = float(station[4])
-        wind_speed += math.sqrt(u_wind * u_wind + v_wind * v_wind)
-    return wind_speed
+def average_wind_speed(observed_data: pd.DataFrame) -> float:
+    """Calculates the average wind speed across all stations from the observed wind's u- and v-component.
+    """
+    wind_speed = np.sqrt(observed_data["wind_u"] ** 2 + observed_data["wind_v"] ** 2)
+    return wind_speed.mean()
 
 
 def main():
     all_stations_data = read_observed_data()
-    converted_temperature = convert_fahrenheit_to_celsius(all_stations_data)
-    temperature_sum = sum_temperature_all_stations(converted_temperature)
+    all_stations_data["temp"] = convert_fahrenheit_to_celsius(all_stations_data["temp"])
+    temperature_sum = sum_temperature_all_stations(all_stations_data["temp"])
     wind_speed = average_wind_speed(all_stations_data)
     print("sum", temperature_sum)
-    print("avg", temperature_sum / (len(converted_temperature) if len(converted_temperature) else 1))
+    print("avg", all_stations_data["temp"].mean())
     print("wind", wind_speed / len(all_stations_data))
 
 
