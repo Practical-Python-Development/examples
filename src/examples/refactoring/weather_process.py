@@ -3,6 +3,7 @@
 import csv, math
 
 WEATHER_DATA_FILE = "./../../../data/weather_data.csv"
+CONVERT_TEMPERATURE_THRESHOLD = 25
 
 
 def f(a):
