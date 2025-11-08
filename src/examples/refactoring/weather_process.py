@@ -28,10 +28,7 @@ def convert_fahrenheit_to_celsius(all_stations_obs_data):
 
 
 def sum_temperature_all_stations(observed_data_temp):
-    sum_temp_value = 0
-    for temp in observed_data_temp:
-        sum_temp_value += temp
-    return sum_temp_value
+    return sum(observed_data_temp)
 
 
 def average_wind_speed(observed_data):
