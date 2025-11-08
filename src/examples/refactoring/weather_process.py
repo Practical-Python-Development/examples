@@ -16,6 +16,12 @@ def read_observed_data():
         for single_station in list_weather_data
     ]
 
+def convert_fahrenheit_to_celsius(
+    all_stations_obs_temp: pd.Series,
+    conversion_threshold: float = CONVERT_TEMPERATURE_THRESHOLD
+) -> pd.Series:
+    """Convert temperature values from Fahrenheit to Celsius, in case the temperature value exceeds a conversion
+    threshold.
 
 def convert_fahrenheit_to_celsius(all_stations_obs_data):
     station_temp = []
