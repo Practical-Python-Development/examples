@@ -11,10 +11,10 @@ def read_observed_data():
     list_weather_data = list(csv.reader(weather_data))
     weather_data.close()
     list_weather_data = list_weather_data[1:]
-    return(
+    return[
         [single_station[0], single_station[1], single_station[2], single_station[3], single_station[4]]
         for single_station in list_weather_data
-    )
+    ]
 
 
 def convert_fahrenheit_to_celsius(all_stations_obs_data):
