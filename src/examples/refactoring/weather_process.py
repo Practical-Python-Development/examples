@@ -1,9 +1,5 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-# sum 209.44
-# avg 52.36
-# wind 4.04873034911261
-
 import pandas as pd
 
 TEMPERATURE_THRESHOLD = 25
