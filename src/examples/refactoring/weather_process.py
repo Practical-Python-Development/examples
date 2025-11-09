@@ -1,39 +1,37 @@
 """This script is badly written on purpose to demonstrate refactoring."""
 
-import csv, math
+# sum 209.44
+# avg 52.36
+# wind 4.04873034911261
+
+import pandas as pd
+
+TEMPERATURE_THRESHOLD = 25
+WEATHER_DATA_FILE_PATH = "./../../../data/weather_data.csv"
 
 
-def f(a):
-    t = []
-    for i in a:
-        if float(i[1]) > 25:
-            t.append(float(i[1]) * 1.8 + 32)
-        else:
-            t.append(float(i[1]))
+def convert_temperature_to_fahrenheit(observed_temperature, threshold=TEMPERATURE_THRESHOLD):
+    # Convert temperature above the threshold to Fahrenheit
+    t = observed_temperature.copy()
+    mask = observed_temperature > threshold
+    t[mask] = t[mask] * 1.8 + 32
     return t
 
 
-def g(a):
-    s = 0
-    for i in a:
-        s += i
-    return s
+def calculate_mean_wind_speed(weather_data):
+    # Calculate the mean wind speed
+    wind_speed = (weather_data["wind_u"] ** 2 + weather_data["wind_v"] ** 2) ** 0.5
+    return wind_speed.mean()
 
 
-r = open("./../../../data/weather_data.csv")
-d = list(csv.reader(r))
-r.close()
-d = d[1:]
-x = []
-for i in d:
-    x.append([i[0], i[1], i[2], i[3], i[4]])
-y = f(x)
-z = g(y)
-print("sum", z)
-print("avg", z / (len(y) if len(y) else 1))
-ws = 0
-for i in d:
-    u = float(i[3])
-    v = float(i[4])
-    ws += math.sqrt(u * u + v * v)
-print("wind", ws / len(d))
+def main():
+    weather_records = pd.read_csv(WEATHER_DATA_FILE_PATH)
+    converted_temperatures = convert_temperature_to_fahrenheit(weather_records["temp"])
+    mean_wind_speed = calculate_mean_wind_speed(weather_records)
+    print("sum", converted_temperatures.sum())
+    print("avg", converted_temperatures.mean())
+    print("wind", mean_wind_speed)
+
+
+if __name__ == "__main__":
+    main()
