@@ -1,35 +1,55 @@
 """This script is badly written on purpose to demonstrate refactoring."""
+
 import csv, math
+import pandas as pd
+from pathlib import Path
 
-def f(a):
-    t=[]
-    for i in a:
-        if float(i[1])>25:
-            t.append(float(i[1])*1.8+32)
-        else:
-            t.append(float(i[1]))
-    return t
-
-def g(a):
-    s=0
-    for i in a:
-        s+=i
-    return s
+TEMP_THRESHOLD = 25
+PATH_WEATHER_DATA = "./../../../data/weather_data.csv"
+FACTOR_C_TO_F = 1.8
+OFFSET_C_TO_F = 32
 
 
-r=open('./../../../data/weather_data.csv')
-d=list(csv.reader(r))
-r.close()
-d=d[1:]
-x=[]
-for i in d:
-    x.append([i[0],i[1],i[2],i[3],i[4]])
-y=f(x)
-z=g(y)
-print('sum',z)
-print('avg',z/(len(y) if len(y) else 1))
-ws=0
-for i in d:
-    u=float(i[3]); v=float(i[4])
-    ws+=math.sqrt(u*u+v*v)
-print('wind',ws/len(d))
+def read_observations(data_path: Path = PATH_WEATHER_DATA) -> pd.DataFrame:
+    """read observations from csv file"""
+    obs = pd.read_csv(data_path)
+    return obs
+
+
+def convert_temp(
+    temps: pd.Series,
+    threshold: float = TEMP_THRESHOLD,
+    factor: float = FACTOR_C_TO_F,
+    offset: float = OFFSET_C_TO_F,
+) -> pd.Series:
+    """
+    convert temps above threshold to Fahrenheit
+
+    :param temps: series of temps
+    :param threshold: temperature threshold
+    :param factor: temperature factor
+    :param offset: temperature offset
+    """
+    temps_converted = temps.copy()
+    mask = temps > threshold
+    temps_converted[mask] = temps[mask] * factor + offset
+    return temps_converted
+
+
+def compute_mean_wind_speed(obs: pd.DataFrame) -> float:
+    """compute mean horizontal wind speed"""
+    horizontal_wind_speed = (obs["wind_u"] ** 2 + obs["wind_v"] ** 2) ** 0.5
+    return horizontal_wind_speed.mean()
+
+
+def main():
+    records = read_observations()
+    records["temp"] = convert_temp(records["temp"])
+    mean_wind_speed = compute_mean_wind_speed(records)
+    print("sum", records["temp"].sum())
+    print("avg", records["temp"].mean())
+    print("wind", mean_wind_speed)
+
+
+if __name__ == "__main__":
+    main()
