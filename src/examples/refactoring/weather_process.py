@@ -25,20 +25,34 @@ def sum_temps(temps):
     return sum_temps
 
 
-read_in = open(PATH_WEATHER_DATA)
-station_data = list(csv.reader(read_in))
-read_in.close()
-station_data = station_data[1:]
-records = []
-for record in station_data:
-    records.append([record[0], record[1], record[2], record[3], record[4]])
-converted_temps = convert_temps(records)
-total_temp = sum_temps(converted_temps)
-print("sum", total_temp)
-print("avg", total_temp / (len(converted_temps) if len(converted_temps) else 1))
-mean_wind_speed = 0
-for record in station_data:
-    u = float(record[3])
-    v = float(record[4])
-    mean_wind_speed += math.sqrt(u * u + v * v)
-print("wind", mean_wind_speed / len(station_data))
+def read_in_observations():
+    read_in = open(PATH_WEATHER_DATA)
+    station_data = list(csv.reader(read_in))
+    read_in.close()
+    station_data = station_data[1:]
+    records = []
+    for record in station_data:
+        records.append([record[0], record[1], record[2], record[3], record[4]])
+    return records
+
+
+def compute_mean_wind_speed(records):
+    total_wind_speed = 0
+    for record in records:
+        u = float(record[3])
+        v = float(record[4])
+        total_wind_speed += math.sqrt(u * u + v * v)
+    return total_wind_speed / len(records)
+
+
+def main():
+    records = read_in_observations()
+    converted_temps = convert_temps(records)
+    total_temp = sum_temps(converted_temps)
+    mean_wind_speed = compute_mean_wind_speed(records)
+    print("sum", total_temp)
+    print("avg", total_temp / (len(converted_temps) if len(converted_temps) else 1))
+    print("wind", mean_wind_speed)
+
+if __name__ == "__main__":
+    main()
