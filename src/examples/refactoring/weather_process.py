@@ -23,18 +23,18 @@ def sum_temperatures(temps):
 
 
 r=open(PATH_WEATHER_DATA)
-d=list(csv.reader(r))
+station_data=list(csv.reader(r))
 r.close()
-d=d[1:]
-x=[]
-for i in d:
-    x.append([i[0],i[1],i[2],i[3],i[4]])
-y=convert_temperatures(x)
-z=sum_temperatures(y)
-print('sum',z)
-print('avg',z/(len(y) if len(y) else 1))
-ws=0
-for i in d:
-    u=float(i[3]); v=float(i[4])
-    ws+=math.sqrt(u * u + v * v)
-print('wind',ws/len(d))
+station_data=station_data[1:]
+records=[]
+for record in station_data:
+    records.append([record[0], record[1], record[2], record[3], record[4]])
+converted_temps = convert_temperatures(records)
+total_temp=sum_temperatures(converted_temps)
+print('sum', total_temp)
+print('avg', total_temp / (len(converted_temps) if len(converted_temps) else 1))
+mean_wind_speed = 0
+for record in records:
+    u=float(record[3]); v=float(record[4])
+    mean_wind_speed+=math.sqrt(u * u + v * v)
+print('wind', mean_wind_speed / len(records))
