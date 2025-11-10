@@ -1,5 +1,5 @@
-"""This script is reads in observational data to convert temperatures from Celsius to Fahrenheit
-and to compute the mean wind speed."""
+"""This script reads in observational data, to convert temperatures from Celsius to Fahrenheit
+and to compute the horizontal mean wind speed."""
 
 from pathlib import Path
 import pandas as pd
@@ -10,17 +10,29 @@ FACTOR_C_TO_F = 1.8
 TEMP_THRESHOLD_C = 25
 
 
-def read_in_observations() -> pd.DataFrame:
+def read_in_observations(data_path: Path = PATH_WEATHER_DATA) -> pd.DataFrame:
     """Read observations from CSV file."""
-    obs = pd.read_csv(PATH_WEATHER_DATA)
+    obs = pd.read_csv(data_path)
     return obs
 
 
-def convert_temps(temps: pd.Series) -> pd.Series:
-    """Convert temperatures above threshold from Celsius to Fahrenheit"""
+def convert_temps(
+        temps: pd.Series,
+        threshold: float = TEMP_THRESHOLD_C,
+        factor: float = FACTOR_C_TO_F,
+        offset: float = OFFSET_C_TO_F
+    ) -> pd.Series:
+    """
+    Convert temperatures above threshold from Celsius to Fahrenheit
+
+    :param temps: Temperatures to convert.
+    :param threshold: Temperature threshold. Defaults to 25
+    :param factor: Temperature factor. Defaults to 1.8
+    :param offset: Temperature offset in Fahrenheit. Defaults to 32.
+    """
     temps_converted = temps.copy()
-    mask = temps > TEMP_THRESHOLD_C
-    temps_converted[mask] = temps[mask] * FACTOR_C_TO_F + OFFSET_C_TO_F
+    mask = temps > threshold
+    temps_converted[mask] = temps[mask] * factor + offset
     return temps_converted
 
 
