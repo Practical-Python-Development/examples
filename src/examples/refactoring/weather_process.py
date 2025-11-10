@@ -6,20 +6,20 @@ TEMP_THRESHOLD_C = 25.0
 FACTOR_C_TO_F = 1.8
 OFFSET_C_TO_F = 32.0
 
-def f(a):
-    t=[]
-    for i in a:
-        if float(i[1])> TEMP_THRESHOLD_C:
-            t.append(float(i[1]) * FACTOR_C_TO_F + OFFSET_C_TO_F)
+def convert_temperatures(obs):
+    temps = []
+    for record in obs:
+        if float(record[1])> TEMP_THRESHOLD_C:
+            temps.append(float(record[1]) * FACTOR_C_TO_F + OFFSET_C_TO_F)
         else:
-            t.append(float(i[1]))
-    return t
+            temps.append(float(record[1]))
+    return temps
 
-def g(a):
-    s=0
-    for i in a:
-        s+=i
-    return s
+def sum_temperatures(temps):
+    sum_temps = 0
+    for i in temps:
+        sum_temps += i
+    return sum_temps
 
 
 r=open(PATH_WEATHER_DATA)
@@ -29,8 +29,8 @@ d=d[1:]
 x=[]
 for i in d:
     x.append([i[0],i[1],i[2],i[3],i[4]])
-y=f(x)
-z=g(y)
+y=convert_temperatures(x)
+z=sum_temperatures(y)
 print('sum',z)
 print('avg',z/(len(y) if len(y) else 1))
 ws=0
