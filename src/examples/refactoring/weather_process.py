@@ -6,7 +6,8 @@ TEMP_THRESHOLD_C = 25.0
 FACTOR_C_TO_F = 1.8
 OFFSET_C_TO_F = 32.0
 
-def convert_temperatures(obs):
+def convert_temperatures(obs: list[list[str | float]]) -> list[float]:
+    """Convert temps above threshold to Farenheit"""
     temps = []
     for record in obs:
         if float(record[1])> TEMP_THRESHOLD_C:
@@ -15,11 +16,13 @@ def convert_temperatures(obs):
             temps.append(float(record[1]))
     return temps
 
-def sum_temperatures(temps):
+def sum_temperatures(temps: list[float]) -> float:
+    """Return total of all temperature values."""
     return sum(temps)
 
 
-def read_observations():
+def read_observations() -> list[list[str | float]]:
+    """Read observations from CSV file."""
     r = open(PATH_WEATHER_DATA)
     station_data = list(csv.reader(r))
     r.close()
@@ -28,7 +31,8 @@ def read_observations():
     for record in station_data]
 
 
-def compute_mean_wind_speed(records):
+def compute_mean_wind_speed(records: list[list[str | float]]) -> float:
+    """Compute mean horizontal wind speed magnitude."""
     total_wind_speed = 0
     for record in records:
         u = float(record[3])
