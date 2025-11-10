@@ -3,16 +3,17 @@
 from pathlib import Path
 import pandas as pd
 
-
 PATH_WEATHER_DATA = Path(__file__).parents[3] / "data" / "weather_data.csv"
 TEMP_THRESHOLD_C = 25
 FACTOR_C_TO_F = 1.8
 OFFSET_C_TO_F = 32
 
+
 def read_observations() -> pd.DataFrame:
     """Read observations from CSV file."""
     obs = pd.read_csv(PATH_WEATHER_DATA)
     return obs
+
 
 def convert_temperature(
     temps: pd.Series,
@@ -43,6 +44,7 @@ def main():
     print('sum', records["temp"].sum())
     print('avg', records["temp"].mean())
     print('wind', mean_wind_speed)
+
 
 if __name__ == '__main__':
     main()
