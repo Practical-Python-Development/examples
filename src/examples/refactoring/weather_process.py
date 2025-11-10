@@ -14,10 +14,18 @@ def read_observations() -> pd.DataFrame:
     obs = pd.read_csv(PATH_WEATHER_DATA)
     return obs
 
-def convert_temperature(temps: pd.Series) -> pd.Series:
-    """Convert temps above threshold to Farenheit."""
+def convert_temperature(
+    temps: pd.Series,
+    threshold: float = TEMP_THRESHOLD_C,
+) -> pd.Series:
+    """
+    Convert temps above threshold to Farenheit.
+
+    :param temps: Temperature to convert.
+    :param threshold: Temperature threshold.
+    """
     temps_converted = temps.copy()
-    mask = temps > TEMP_THRESHOLD_C
+    mask = temps > threshold
     temps_converted[mask] = temps[mask] * FACTOR_C_TO_F + OFFSET_C_TO_F
     return temps_converted
 
