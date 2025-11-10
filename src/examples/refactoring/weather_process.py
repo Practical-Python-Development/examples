@@ -19,10 +19,7 @@ def convert_temps(obs):
 
 
 def sum_temps(temps):
-    sum_temps = 0
-    for temp in temps:
-        sum_temps += temp
-    return sum_temps
+    return sum(temps)
 
 
 def read_in_observations():
@@ -30,10 +27,10 @@ def read_in_observations():
     station_data = list(csv.reader(read_in))
     read_in.close()
     station_data = station_data[1:]
-    records = []
-    for record in station_data:
-        records.append([record[0], record[1], record[2], record[3], record[4]])
-    return records
+    return [
+        [record[0], record[1], record[2], record[3], record[4]]
+        for record in station_data
+    ]
 
 
 def compute_mean_wind_speed(records):
