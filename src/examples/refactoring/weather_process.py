@@ -1,35 +1,37 @@
-"""This script is badly written on purpose to demonstrate refactoring."""
-import csv, math
+"""Read weather data and calculate average temperature and horizontal wind speed"""
 
-def f(a):
-    t=[]
-    for i in a:
-        if float(i[1])>25:
-            t.append(float(i[1])*1.8+32)
+import csv
+import math
+import numpy as np
+import pandas as pd
+
+
+def celcius_to_fahrenheit(temperature, threshold):
+    """ Convert temperature in Celcius to Fahrenheit if it is over the threshold """
+    t = []
+    for temp in temperature:
+        if temp > threshold:
+            t.append(temp * 1.8 + 32)  # convert Celsius to Fahrenheit
         else:
-            t.append(float(i[1]))
+            t.append(temp)
     return t
 
-def g(a):
-    s=0
-    for i in a:
-        s+=i
-    return s
+weather_data = pd.read_csv("./../../../data/weather_data.csv")
+number_of_stations = len(weather_data["station"])
+#print(weather_data)
+#print(number_of_stations)
+
+temperature = celcius_to_fahrenheit(weather_data["temp"], 25)
+#z = sum(temperature)
+#print("sum", sum(temperature))
+print("Average temperature", np.mean(temperature) if len(temperature) else 1)
 
 
-r=open('./../../../data/weather_data.csv')
-d=list(csv.reader(r))
-r.close()
-d=d[1:]
-x=[]
-for i in d:
-    x.append([i[0],i[1],i[2],i[3],i[4]])
-y=f(x)
-z=g(y)
-print('sum',z)
-print('avg',z/(len(y) if len(y) else 1))
-ws=0
-for i in d:
-    u=float(i[3]); v=float(i[4])
-    ws+=math.sqrt(u*u+v*v)
-print('wind',ws/len(d))
+# Calculate average horizontal wind speed
+sum_wind_speed = 0
+for i in range(0, number_of_stations):
+    sum_wind_speed += math.sqrt(
+        weather_data["wind_u"][i] ** 2 + weather_data["wind_v"][i] ** 2
+    )
+avg_wind_speed = sum_wind_speed / number_of_stations
+print("Average horizontal sum_wind_speed", avg_wind_speed)
