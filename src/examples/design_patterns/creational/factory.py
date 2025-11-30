@@ -16,7 +16,6 @@ class WeatherParser(ABC):
 class SatelliteParser(WeatherParser):
 
     def parse(self, raw_data: str) -> dict:
-        # Simulated parsing logic
         return {"source": "satellite", "temperature": -50, "humidity": 10}
 
 

@@ -55,6 +55,7 @@ class WeatherSensorFactory(ABC):
     def create_humidity_sensor(self) -> HumiditySensor:
         pass
 
+
 # --- Concrete Factories ---
 class SatelliteSensorFactory(WeatherSensorFactory):
 

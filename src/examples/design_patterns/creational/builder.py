@@ -8,6 +8,7 @@ from dataclasses import dataclass
 # --- Product ---
 @dataclass
 class WeatherReport:
+
     temperature: float = None
     humidity: float = None
     wind_speed: float = None
