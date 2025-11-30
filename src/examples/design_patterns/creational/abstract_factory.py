@@ -1,4 +1,8 @@
+"""Example for an abstract factory."""
+
+
 from abc import ABC, abstractmethod
+
 
 # --- Abstract Products ---
 class TemperatureSensor(ABC):
@@ -6,27 +10,33 @@ class TemperatureSensor(ABC):
     def read_temperature(self) -> float:
         pass
 
+
 class HumiditySensor(ABC):
     @abstractmethod
     def read_humidity(self) -> float:
         pass
+
 
 # --- Concrete Products ---
 class SatelliteTemperatureSensor(TemperatureSensor):
     def read_temperature(self) -> float:
         return -50.0
 
+
 class SatelliteHumiditySensor(HumiditySensor):
     def read_humidity(self) -> float:
         return 10.0
+
 
 class GroundTemperatureSensor(TemperatureSensor):
     def read_temperature(self) -> float:
         return 20.0
 
+
 class GroundHumiditySensor(HumiditySensor):
     def read_humidity(self) -> float:
         return 55.0
+
 
 # --- Abstract Factory ---
 class WeatherSensorFactory(ABC):
@@ -46,12 +56,14 @@ class SatelliteSensorFactory(WeatherSensorFactory):
     def create_humidity_sensor(self) -> HumiditySensor:
         return SatelliteHumiditySensor()
 
+
 class GroundSensorFactory(WeatherSensorFactory):
     def create_temperature_sensor(self) -> TemperatureSensor:
         return GroundTemperatureSensor()
 
     def create_humidity_sensor(self) -> HumiditySensor:
         return GroundHumiditySensor()
+
 
 # --- Client Code ---
 def monitor(factory: WeatherSensorFactory):
