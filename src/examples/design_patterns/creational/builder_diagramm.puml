@@ -1,0 +1,38 @@
+@startuml
+title Builder Pattern
+
+' --- Product ---
+class Product
+
+' --- Abstract Builder ---
+interface Builder {
+    +reset()
+    +buildPartA()
+    +buildPartB()
+    +getResult(): Product
+}
+
+' --- Concrete Builders ---
+class ConcreteBuilder1
+class ConcreteBuilder2
+
+Builder <|-- ConcreteBuilder1
+Builder <|-- ConcreteBuilder2
+ConcreteBuilder1 ..> Product : builds
+ConcreteBuilder2 ..> Product : builds
+
+' --- Director ---
+class Director {
+    -builder: Builder
+    +construct()
+}
+
+Director --> Builder : uses (composition)
+
+' --- Client ---
+class Client
+
+Client --> Director : calls
+Client --> Product : receives
+
+@enduml
