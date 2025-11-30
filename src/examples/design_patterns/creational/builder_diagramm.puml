@@ -1,38 +1,24 @@
 @startuml
-title Builder Pattern
+title Prototype Pattern
 
-' --- Product ---
-class Product
-
-' --- Abstract Builder ---
-interface Builder {
-    +reset()
-    +buildPartA()
-    +buildPartB()
-    +getResult(): Product
+' --- Prototype Interface ---
+interface Prototype {
+    +clone(): Prototype
 }
 
-' --- Concrete Builders ---
-class ConcreteBuilder1
-class ConcreteBuilder2
+' --- Concrete Prototypes ---
+class ConcretePrototype1
+class ConcretePrototype2
 
-Builder <|-- ConcreteBuilder1
-Builder <|-- ConcreteBuilder2
-ConcreteBuilder1 ..> Product : builds
-ConcreteBuilder2 ..> Product : builds
+Prototype <|-- ConcretePrototype1
+Prototype <|-- ConcretePrototype2
 
-' --- Director ---
-class Director {
-    -builder: Builder
-    +construct()
-}
-
-Director --> Builder : uses (composition)
+ConcretePrototype1 ..> ConcretePrototype1 : clones
+ConcretePrototype2 ..> ConcretePrototype2 : clones
 
 ' --- Client ---
 class Client
 
-Client --> Director : calls
-Client --> Product : receives
+Client --> Prototype : uses clone()
 
 @enduml
