@@ -1,0 +1,30 @@
+@startuml
+title Composite Pattern – General Structure
+
+' --- Component Interface ---
+interface Component {
+    +operation()
+}
+
+' --- Leaf ---
+class Leaf {
+    +operation()
+}
+
+' --- Composite ---
+class Composite {
+    -children: List<Component>
+    +add(Component)
+    +remove(Component)
+    +operation()
+}
+
+Component <|.. Leaf
+Component <|.. Composite
+Composite --> Component : contains
+
+' --- Client ---
+class Client
+Client --> Component : uses uniformly
+
+@enduml
