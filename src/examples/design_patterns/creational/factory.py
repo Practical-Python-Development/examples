@@ -15,23 +15,40 @@ class WeatherParser(ABC):
 # Concrete Products
 class SatelliteParser(WeatherParser):
 
+    def __init__(self, orbit: str, resolution: str):
+        self.orbit = orbit
+        self.resolution = resolution
+        print(f"SatelliteParser initialized with orbit={orbit}, resolution={resolution}")
+
     def parse(self, raw_data: str) -> dict:
-        return {"source": "satellite", "temperature": -50, "humidity": 10}
+        return {"source": "satellite", "orbit": self.orbit,
+                "resolution": self.resolution, "data": raw_data.upper()}
 
 
 class RadarParser(WeatherParser):
 
+    def __init__(self, frequency: float):
+        self.frequency = frequency
+        print(f"RadarParser initialized with frequency={frequency} GHz")
+
     def parse(self, raw_data: str) -> dict:
-        return {"source": "radar", "temperature": 15, "humidity": 65}
+        return {"source": "radar", "frequency": self.frequency,
+                "data": raw_data.lower()}
 
 
 class GroundStationParser(WeatherParser):
 
+    def __init__(self, location: str, sensors: list[str]):
+        self.location = location
+        self.sensors = sensors
+        print(f"GroundStationParser initialized at {location} with sensors={sensors}")
+
     def parse(self, raw_data: str) -> dict:
-        return {"source": "ground", "temperature": 20, "humidity": 55}
+        return {"source": "ground", "location": self.location,
+                "sensors": self.sensors, "data": raw_data[::-1]}
 
 
-# Creator
+# Creator Interface
 class ParserFactory(ABC):
 
     @abstractmethod
@@ -39,37 +56,38 @@ class ParserFactory(ABC):
         pass
 
 
-# Concrete Creators
+# Concrete Factories
 class SatelliteFactory(ParserFactory):
 
     def create_parser(self) -> WeatherParser:
-        return SatelliteParser()
-
+        # Factory decides orbit/resolution
+        return SatelliteParser(orbit="polar", resolution="1km")
 
 class RadarFactory(ParserFactory):
 
     def create_parser(self) -> WeatherParser:
-        return RadarParser()
-
+        # Factory decides frequency
+        return RadarParser(frequency=5.6)
 
 class GroundStationFactory(ParserFactory):
 
     def create_parser(self) -> WeatherParser:
-        return GroundStationParser()
+        # Factory decides location/sensors
+        return GroundStationParser(location="Hamburg", sensors=["temp", "humidity", "wind"])
 
 
 # Client Code
 def process_weather(factory: ParserFactory, raw_data: str):
-    parser = factory.create_parser()
-    parsed = parser.parse(raw_data)
-    print(f"Source: {parsed['source']}, Temp: {parsed['temperature']}°C, Humidity: {parsed['humidity']}%")
+    parser = factory.create_parser()  # client doesn’t know about orbit/frequency/location
+    result = parser.parse(raw_data)
+    print("Processed:", result)
 
 
 def main():
     # Example usage
-    process_weather(SatelliteFactory(), "SAT_RAW")
-    process_weather(RadarFactory(), "RADAR_RAW")
-    process_weather(GroundStationFactory(), "GROUND_RAW")
+    process_weather(SatelliteFactory(), "Cloud data")
+    process_weather(RadarFactory(), "Rain data")
+    process_weather(GroundStationFactory(), "Wind data")
 
 
 if __name__ == '__main__':
