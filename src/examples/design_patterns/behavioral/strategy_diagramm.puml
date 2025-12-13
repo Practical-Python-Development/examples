@@ -1,0 +1,36 @@
+@startuml
+title Strategy Pattern – General Structure
+
+' --- Strategy Interface ---
+interface Strategy {
+    +execute()
+}
+
+' --- Concrete Strategies ---
+class ConcreteStrategyA {
+    +execute()
+}
+class ConcreteStrategyB {
+    +execute()
+}
+class ConcreteStrategyC {
+    +execute()
+}
+
+' --- Context ---
+class Context {
+    -strategy: Strategy
+    +setStrategy(Strategy)
+    +executeStrategy()
+}
+
+Strategy <|.. ConcreteStrategyA
+Strategy <|.. ConcreteStrategyB
+Strategy <|.. ConcreteStrategyC
+Context --> Strategy : delegates
+
+' --- Client ---
+class Client
+Client --> Context : configures strategy
+
+@enduml
