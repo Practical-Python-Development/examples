@@ -1,0 +1,50 @@
+@startuml
+title Adapter Pattern – Generic Structure
+
+' --- Target Interface ---
+interface Target {
+    +request(): void
+}
+
+' --- Incompatible Sources (Adaptees) ---
+class AdapteeA {
+    +specificRequestA()
+}
+
+class AdapteeB {
+    +specificRequestB()
+}
+
+class AdapteeC {
+    +specificRequestC()
+}
+
+' --- Adapters ---
+class AdapterA {
+    -adaptee: AdapteeA
+    +request(): void
+}
+
+class AdapterB {
+    -adaptee: AdapteeB
+    +request(): void
+}
+
+class AdapterC {
+    -adaptee: AdapteeC
+    +request(): void
+}
+
+Target <|.. AdapterA
+Target <|.. AdapterB
+Target <|.. AdapterC
+
+AdapterA --> AdapteeA : adapts
+AdapterB --> AdapteeB : adapts
+AdapterC --> AdapteeC : adapts
+
+' --- Client ---
+class Client
+Client --> Target : uses unified interface
+
+@enduml

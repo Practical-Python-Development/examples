@@ -1,0 +1,43 @@
+@startuml
+title Abstract Factory Pattern
+
+' --- Abstract Products ---
+interface AbstractProductA
+interface AbstractProductB
+
+class ConcreteProductA1
+class ConcreteProductA2
+class ConcreteProductB1
+class ConcreteProductB2
+
+AbstractProductA <|-- ConcreteProductA1
+AbstractProductA <|-- ConcreteProductA2
+AbstractProductB <|-- ConcreteProductB1
+AbstractProductB <|-- ConcreteProductB2
+
+' --- Abstract Factory ---
+interface AbstractFactory {
+    +createProductA(): AbstractProductA
+    +createProductB(): AbstractProductB
+}
+
+' --- Concrete Factories ---
+class ConcreteFactory1
+class ConcreteFactory2
+
+AbstractFactory <|-- ConcreteFactory1
+AbstractFactory <|-- ConcreteFactory2
+
+ConcreteFactory1 ..> ConcreteProductA1 : creates
+ConcreteFactory1 ..> ConcreteProductB1 : creates
+ConcreteFactory2 ..> ConcreteProductA2 : creates
+ConcreteFactory2 ..> ConcreteProductB2 : creates
+
+' --- Client ---
+class Client {
+    +operation(factory: AbstractFactory)
+}
+
+Client --> AbstractFactory : uses
+
+@enduml

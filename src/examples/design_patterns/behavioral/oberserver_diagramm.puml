@@ -1,0 +1,42 @@
+@startuml
+title Observer Pattern – General Structure
+
+' --- Subject Interface ---
+interface Subject {
+    +attach(Observer)
+    +detach(Observer)
+    +notify()
+}
+
+' --- Concrete Subject ---
+class ConcreteSubject {
+    -state
+    -observers: List<Observer>
+    +attach(Observer)
+    +detach(Observer)
+    +notify()
+}
+
+' --- Observer Interface ---
+interface Observer {
+    +update(Subject)
+}
+
+' --- Concrete Observers ---
+class ConcreteObserverA {
+    +update(Subject)
+}
+class ConcreteObserverB {
+    +update(Subject)
+}
+
+Subject <|.. ConcreteSubject
+Observer <|.. ConcreteObserverA
+Observer <|.. ConcreteObserverB
+ConcreteSubject --> Observer : notifies
+
+' --- Client ---
+class Client
+Client --> Subject : configures observers
+
+@enduml

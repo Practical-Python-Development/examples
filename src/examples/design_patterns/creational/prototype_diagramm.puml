@@ -1,0 +1,24 @@
+@startuml
+title Prototype Pattern
+
+' --- Prototype Interface ---
+interface Prototype {
+    +clone(): Prototype
+}
+
+' --- Concrete Prototypes ---
+class ConcretePrototype1
+class ConcretePrototype2
+
+Prototype <|-- ConcretePrototype1
+Prototype <|-- ConcretePrototype2
+
+ConcretePrototype1 ..> ConcretePrototype1 : clones
+ConcretePrototype2 ..> ConcretePrototype2 : clones
+
+' --- Client ---
+class Client
+
+Client --> Prototype : uses clone()
+
+@enduml
