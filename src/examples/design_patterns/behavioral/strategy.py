@@ -48,7 +48,7 @@ def main():
     report.set_strategy(RainForecast())
     print(report.generate(20, 80))
 
-    report.set_strategy(WindForecast())
+    report.set_strategy(TropicalNightForecast())
     print(report.generate(15, 60))
 
 
