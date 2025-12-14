@@ -22,9 +22,11 @@ class RainForecast(ForecastStrategy):
         return "Rain forecast: Low chance of rain."
 
 
-class WindForecast(ForecastStrategy):
+class TropicalNightForecast(ForecastStrategy):
     def forecast(self, temperature: float, humidity: float) -> str:
-        return f"Wind forecast: Expect gusts with temp={temperature}°C."
+        if temperature < 20:
+            return "Temperature is below 20°C, no tropical night"
+        return f"Tropical night expected with temp={temperature}°C."
 
 
 class WeatherReport:
