@@ -1,0 +1,38 @@
+@startuml
+title Factory Pattern
+
+' ----- Product Interface -----
+interface Product {
+    +operation(): void
+}
+
+' ----- Concrete Products -----
+class ConcreteProductA
+class ConcreteProductB
+
+Product <|-- ConcreteProductA
+Product <|-- ConcreteProductB
+
+' ----- Creator Interface -----
+interface Creator {
+    +factory_method(): Product
+}
+
+' ----- Concrete Creators -----
+class ConcreteCreatorA
+class ConcreteCreatorB
+
+Creator <|-- ConcreteCreatorA
+Creator <|-- ConcreteCreatorB
+
+' ----- Association: Creator returns Product -----
+Creator ..> Product : creates
+
+' ----- Client -----
+class Client {
+    +some_operation(creator: Creator)
+}
+
+Client --> Creator : uses
+
+@enduml

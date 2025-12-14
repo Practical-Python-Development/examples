@@ -1,0 +1,15 @@
+@startuml
+title Singleton Pattern
+
+class Singleton {
+    -instance: Singleton
+    +getInstance(): Singleton
+    +operation()
+}
+
+Singleton ..> Singleton : returns same instance
+
+class Client
+Client --> Singleton : uses
+
+@enduml
