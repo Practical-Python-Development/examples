@@ -19,7 +19,7 @@ from src.examples.performance.utils import timeit
 
 
 @timeit
-def groupby_month_with_grouper(df: pd.DataFrame):
+def groupby_date_with_grouper(df: pd.DataFrame):
     """
     Group time series data by month using pd.Grouper.
 
@@ -28,13 +28,13 @@ def groupby_month_with_grouper(df: pd.DataFrame):
     - No additional columns created
     - pandas uses optimized time-based grouping
     """
-    return df.groupby(pd.Grouper(freq="M")).sum()
+    return df.groupby(pd.Grouper(freq="D")).sum()
 
 
 @timeit
-def groupby_month_with_column(df: pd.DataFrame):
+def groupby_date_with_column(df: pd.DataFrame):
     """
-    Group time series data by extracting year and month into a column.
+    Group time series data by extracting year, month and day into a column.
 
     Why this is slower:
     - Requires creating a new column
@@ -62,8 +62,8 @@ def main():
         index=date_index
     )
 
-    groupby_month_with_grouper(df)
-    groupby_month_with_column(df)
+    groupby_date_with_grouper(df)
+    groupby_date_with_column(df)
 
 
 if __name__ == "__main__":
