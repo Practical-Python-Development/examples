@@ -43,7 +43,8 @@ def groupby_category(df: pd.DataFrame):
 
 def main():
     num_rows = 1_000_000
-    cities = ["Berlin", "Paris", "Rome", "Madrid"]
+    string_multiply = 10
+    cities = ["Berlin" * string_multiply, "Paris" * string_multiply, "Rome" * string_multiply, "Madrid" * string_multiply]
 
     df = pd.DataFrame({
         "city": np.random.choice(cities, size=num_rows)
@@ -51,6 +52,11 @@ def main():
 
     df_cat = df.copy()
     df_cat["city"] = df_cat["city"].astype("category")
+
+    print(f'Memory usage of uncategorized: {df['city'].memory_usage(deep=True)} Bytes')
+    print(f'Memory usage of categorized: {df_cat['city'].memory_usage(deep=True)} Bytes')
+    print(f'Memory reduction by a factor of {df['city'].memory_usage(deep=True) / df_cat['city'].memory_usage(deep=True)}')
+    # The effect will be bigger for longer strings
 
     groupby_object(df)
     groupby_category(df_cat)
